@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Game</title>
+    <link rel="icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+        html, body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #unity-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="unity-container">
+        <canvas id="unity-canvas" style="width: 100%; height: 100%;"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-progress-bar-empty"></div>
+            <div id="unity-progress-bar-full"></div>
+        </div>
+    </div>
+
+    <!-- Unity WebGL Loader -->
+    <script>
+        var buildUrl = "Build/"; // Path to the Build folder
+        var loaderUrl = buildUrl + "Build1.loader.js";
+        var config = {
+            dataUrl: buildUrl + "Build1.data",
+            frameworkUrl: buildUrl + "Build1.framework.js",
+            codeUrl: buildUrl + "Build1.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "YourCompany",
+            productName: "YourGame",
+            productVersion: "1.0",
+        };
+
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+            createUnityInstance(document.querySelector("#unity-canvas"), config, (progress) => {
+                // Update progress bar
+                var progressBarFull = document.getElementById("unity-progress-bar-full");
+                progressBarFull.style.width = (progress * 100) + "%";
+            }).then((unityInstance) => {
+                console.log("Unity instance loaded successfully.");
+            }).catch((message) => {
+                alert(message);
+            });
+        };
+        document.body.appendChild(script);
+    </script>
+
+    <!-- Unity Loading Animation (optional) -->
+    <div id="unity-logo">
+        <img src="TemplateData/unity-logo-dark.png" alt="Unity Logo">
+    </div>
+</body>
+</html>
